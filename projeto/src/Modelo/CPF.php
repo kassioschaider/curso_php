@@ -1,5 +1,7 @@
 <?php
 
+namespace KassioSchaider\Banco\Modelo;
+
 class CPF
 {
     private $numero;

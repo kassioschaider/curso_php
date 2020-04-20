@@ -1,6 +1,8 @@
 <?php
 
-class Conta
+namespace KassioSchaider\Banco\Modelo\Conta;
+
+abstract class Conta
 {
     private $titular;
     private $saldo = 0;
@@ -20,13 +22,17 @@ class Conta
 
     public function sacar(float $valorASacar): void
     {
+        $tarifaSaque = $valorASacar * $this->percentualTarifa();
+        $valorSaque = $valorASacar + $tarifaSaque;
         if ($valorASacar > $this->saldo) {
             echo "Saldo indisponível";
             return;
         }
 
-        $this->saldo -= $valorASacar;
+        $this->saldo -= $valorSaque;
     }
+
+    abstract public function percentualTarifa(): float;
 
     public function depositar(float $valorADepositar): void
     {
@@ -36,17 +42,6 @@ class Conta
         }
 
         $this->saldo += $valorADepositar;
-    }
-
-    public function transferir(float $valorATransferir, Conta $contaDestino): void
-    {
-        if ($valorATransferir > $this->saldo) {
-            echo "Saldo indisponível";
-            return;
-        }
-
-        $this->sacar($valorATransferir);
-        $contaDestino->depositar($valorATransferir);
     }
 
     public function getSaldo(): float
